@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# TODO: Move to a dedicated folder - runtime
 # default mem0ai config
 default_mem0ai_config = {
     "llm": {
