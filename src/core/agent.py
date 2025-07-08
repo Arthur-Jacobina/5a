@@ -1,25 +1,11 @@
 import dspy
 from mem0 import Memory
 
-from .memory import MemoryTools
+from .memory.memory import MemoryTools
 from .utils import get_current_time
-from .observability import log_mlflow
-
-# Optional MLflow integration
-try:
-    MLFLOW_AVAILABLE = True
-except ImportError:
-    MLFLOW_AVAILABLE = False
-
-class MemoryQA(dspy.Signature):
-    """
-    You're a helpful assistant and have access to memory method.
-    Whenever you answer a user's input, remember to store the information in memory
-    so that you can use it later.
-    """
-    user_input: str = dspy.InputField()
-    response: str = dspy.OutputField()
-
+from .observability.mlflow import log_mlflow
+from .signatures.memory_qa import MemoryQA
+    
 class MemoryReActAgent(dspy.Module):
     """A ReAct agent enhanced with Mem0 memory capabilities."""
 
@@ -51,9 +37,6 @@ class MemoryReActAgent(dspy.Module):
 
     def log_to_mlflow(self, run_name: str = None, experiment_name: str = "default"):
         """Log the DSPy model to MLflow for versioning and deployment."""
-        if not MLFLOW_AVAILABLE:
-            print("⚠️  MLflow not available. Skipping model logging.")
-            return None
         return log_mlflow(self, run_name=run_name, experiment_name=experiment_name)
 
     def set_reminder(self, reminder_text: str, date_time: str = None, user_id: str = "default_user") -> str:
@@ -80,3 +63,6 @@ class MemoryReActAgent(dspy.Module):
             user_id=user_id
         )
     
+    def __call__(self, user_input: str) -> str:
+        """Call the agent with a user input."""
+        return self.forward(user_input)

@@ -1,11 +1,11 @@
 from dotenv import load_dotenv
 from mem0 import Memory
 
-from .config import mem0ai_config as config
+from .base import MemoryTools
 
 load_dotenv()
 
-class MemoryTools:
+class MemoryTools(MemoryTools):
     """Tools for interacting with the Mem0 memory system."""
 
     def __init__(self, memory: Memory):

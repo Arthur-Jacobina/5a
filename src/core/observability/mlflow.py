@@ -12,7 +12,7 @@ def setup_mlflow():
         mlflow.set_tracking_uri(f"file://{mlflow_tracking_dir}")
         
         # Set experiment
-        mlflow.set_experiment("DSPy-Memory-Agent")
+        mlflow.set_experiment(os.getenv("MLFLOW_EXPERIMENT_NAME", "DSPy-Agent"))
         
         # Enable autologging
         mlflow.dspy.autolog()
